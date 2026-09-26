@@ -24,11 +24,11 @@ export const DEFAULT_IMAGE = '/og-image.jpg';
  */
 export function getPublicBaseUrl(): string {
   if (typeof window === 'undefined') {
-    return 'https://ais-pre-u4snn7m472n36a6kgbkxnl-457784679767.us-east5.run.app';
+    return 'https://achados-cctech.vercel.app';
   }
   const origin = window.location.origin;
   if (origin.includes('ais-dev-')) {
-    return origin.replace('ais-dev-', 'ais-pre-');
+    return 'https://achados-cctech.vercel.app';
   }
   return origin;
 }

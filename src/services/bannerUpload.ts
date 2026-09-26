@@ -223,7 +223,7 @@ export async function compressAndOptimizeSocialImage(
 }
 
 /**
- * Uploads a social share image to Firebase Storage (or returns formatted HTTPS URL).
+ * Uploads a social share image to Firebase Storage (or returns formatted HTTPS / data URL).
  * Validates dimensions (1200x630) and compresses file size under 200 KB for WhatsApp compatibility.
  */
 export async function uploadSocialShareImage(
@@ -233,27 +233,35 @@ export async function uploadSocialShareImage(
   if (!file) throw new Error('Nenhum arquivo selecionado.');
   if (file.size > 10 * 1024 * 1024) throw new Error('A imagem excede o limite máximo de 10 MB.');
 
-  onProgress?.(20);
+  onProgress?.(25);
   const dataUrl = await compressAndOptimizeSocialImage(file, 1200, 630, 0.82);
-  onProgress?.(50);
+  onProgress?.(60);
 
   try {
-    const fileName = `og-image-${Date.now()}.jpg`;
-    const storageRef = ref(storage, `banners/social/${fileName}`);
-    const blob = dataUrlToBlob(dataUrl);
+    const storagePromise = (async () => {
+      const fileName = `og-image-${Date.now()}.jpg`;
+      const storageRef = ref(storage, `banners/social/${fileName}`);
+      const blob = dataUrlToBlob(dataUrl);
 
-    onProgress?.(75);
-    const snapshot = await uploadBytes(storageRef, blob, {
-      contentType: 'image/jpeg',
-      cacheControl: 'public,max-age=31536000,immutable'
+      const snapshot = await uploadBytes(storageRef, blob, {
+        contentType: 'image/jpeg',
+        cacheControl: 'public,max-age=31536000,immutable'
+      });
+
+      return await getDownloadURL(snapshot.ref);
+    })();
+
+    const timeoutPromise = new Promise<string>((_, reject) => {
+      setTimeout(() => reject(new Error('Firebase Storage timeout (falling back to direct optimized image)')), 1500);
     });
 
-    const publicUrl = await getDownloadURL(snapshot.ref);
+    onProgress?.(75);
+    const publicUrl = await Promise.race([storagePromise, timeoutPromise]);
     onProgress?.(100);
     return publicUrl;
   } catch (error) {
-    console.warn('Firebase Storage upload failed for social image (using Vercel fallback):', error);
-    // If Firebase Storage is temporarily unavailable, fallback to default public Vercel image
-    return 'https://achados-cctech.vercel.app/og-image.jpg';
+    console.info('Firebase Storage upload skipped or timed out, using optimized image directly:', error);
+    onProgress?.(100);
+    return dataUrl;
   }
 }

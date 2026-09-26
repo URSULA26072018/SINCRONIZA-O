@@ -1134,10 +1134,16 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     setIsUploadingSocialImg(true);
     setSocialImgProgress(25);
 
+    // Hard safety timer: guarantee the loader disappears within 2.5s under any condition
+    const safetyTimer = setTimeout(() => {
+      setIsUploadingSocialImg(false);
+    }, 2500);
+
     try {
       const url = await uploadSocialShareImage(file, (prog) => {
         setSocialImgProgress(prog);
       });
+      clearTimeout(safetyTimer);
       const updated = {
         ...siteConfig,
         socialShareImage: url,
@@ -1148,6 +1154,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       saveSiteConfigToCloud(updated);
       onShowToast('Imagem de compartilhamento atualizada e comprimida com sucesso!');
     } catch (err) {
+      clearTimeout(safetyTimer);
       console.error('Erro ao processar imagem social:', err);
       onShowToast('Erro ao processar imagem social. Tente novamente.');
     } finally {

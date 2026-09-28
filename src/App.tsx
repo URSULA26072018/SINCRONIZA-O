@@ -41,7 +41,6 @@ import { ProductDetail } from './components/ProductDetail';
 import { AdminPanel } from './components/AdminPanel';
 import { Footer } from './components/Footer';
 import { BottomCtaBanner } from './components/BottomCtaBanner';
-import { WhatsAppButton } from './components/WhatsAppButton';
 import { AppPreloader } from './components/AppPreloader';
 import { Toast } from './components/Toast';
 import { updatePageSEO } from './utils/seo';
@@ -549,14 +548,6 @@ export default function App() {
           />
         )}
       </main>
-
-      {/* Floating WhatsApp "Tirar Dúvidas" Button */}
-      {currentView !== 'admin' && (
-        <WhatsAppButton
-          customNumber={siteConfig.whatsappNumber}
-          customMessage={siteConfig.whatsappDefaultMessage}
-        />
-      )}
 
       {/* Global Footer */}
       <Footer

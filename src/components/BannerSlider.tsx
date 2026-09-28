@@ -95,7 +95,7 @@ export const BannerSlider: React.FC<BannerSliderProps> = ({
       {/* Banner puro sem textos e com suporte a clique e swipe */}
       <div 
         onClick={handleBannerClick}
-        className={`relative overflow-hidden rounded-2xl sm:rounded-3xl bg-slate-100 shadow-sm group h-[140px] xs:h-[170px] sm:h-[220px] md:h-[270px] lg:h-[300px] border border-slate-200/80 select-none ${
+        className={`relative overflow-hidden rounded-2xl sm:rounded-3xl bg-slate-100 shadow-sm group h-[200px] xs:h-[230px] sm:h-[260px] md:h-[310px] lg:h-[350px] border border-slate-200/80 select-none ${
           isClickable ? 'cursor-pointer' : ''
         }`}
         onMouseEnter={() => setIsHovered(true)}

@@ -377,32 +377,26 @@ export default function App() {
                   <div className="absolute -top-24 -right-24 w-80 h-80 bg-gradient-to-br from-amber-400/35 to-orange-500/25 rounded-full blur-3xl pointer-events-none -z-10" />
                   <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-gradient-to-tr from-orange-400/25 to-amber-300/20 rounded-full blur-3xl pointer-events-none -z-10" />
 
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 relative z-10">
+                  <div className="flex items-center justify-between gap-3 mb-4 sm:mb-6 relative z-10">
                     <div className="flex items-center gap-3">
                       <div className="relative">
                         <div className="absolute -inset-1 bg-gradient-to-r from-amber-400 via-orange-500 to-amber-500 rounded-2xl blur-xs opacity-75 animate-pulse" />
-                        <div className="relative w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-600 text-white flex items-center justify-center shadow-lg shadow-orange-500/40">
-                          <Sparkles className="w-6 h-6 fill-current text-amber-100" />
+                        <div className="relative w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-600 text-white flex items-center justify-center shadow-lg shadow-orange-500/40">
+                          <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 fill-current text-amber-100" />
                         </div>
                       </div>
-                      <div>
+                      <div className="hidden sm:block">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <h2 className="text-lg sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-1.5">
-                            Achadinhos em Destaque
-                          </h2>
-                          <span className="inline-flex px-3 py-1 rounded-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white text-[11px] sm:text-xs font-black uppercase tracking-wider shadow-md shadow-orange-500/35 ring-2 ring-amber-300/60">
+                          <span className="inline-flex px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white text-xs sm:text-sm font-black uppercase tracking-wider shadow-md shadow-orange-500/35 ring-2 ring-amber-300/60">
                             ★ Top Destaques
                           </span>
                         </div>
-                        <p className="text-xs sm:text-sm text-slate-700 font-medium mt-0.5">
-                          Seleção premium com as melhores ofertas e produtos virais com maior aprovação
-                        </p>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-black text-amber-950 bg-gradient-to-r from-amber-200 via-amber-100 to-orange-100 px-3.5 py-2 rounded-xl flex items-center gap-2 border border-amber-300 shadow-sm">
-                        <Star className="w-4 h-4 fill-amber-500 text-amber-600" />
+                      <span className="text-xs font-black text-amber-950 bg-gradient-to-r from-amber-200 via-amber-100 to-orange-100 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl flex items-center gap-1.5 sm:gap-2 border border-amber-300 shadow-sm">
+                        <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-amber-500 text-amber-600" />
                         <span>{featuredProducts.length} {featuredProducts.length === 1 ? 'achado VIP' : 'achados VIP em alta'}</span>
                       </span>
                     </div>

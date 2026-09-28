@@ -620,3 +620,90 @@ export function subscribeToAdminPassword(
     onUpdate(authData.password);
   });
 }
+
+/**
+ * Cloud Operations for Store Site Visits / Pageviews Analytics
+ */
+const ANALYTICS_DOC_REF = 'settings/analytics';
+
+export async function trackCloudStorePageView(): Promise<void> {
+  // Prevent duplicate counts in the same browser session within 30 minutes
+  const SESSION_VIEW_KEY = 'achados_last_view_timestamp';
+  const now = Date.now();
+  const lastView = sessionStorage.getItem(SESSION_VIEW_KEY);
+  
+  if (lastView && now - parseInt(lastView, 10) < 30 * 60 * 1000) {
+    return; // Already counted this active browsing session
+  }
+  sessionStorage.setItem(SESSION_VIEW_KEY, now.toString());
+
+  const todayStr = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+
+  try {
+    const docRef = doc(db, 'settings', 'analytics');
+    const snap = await getDoc(docRef);
+
+    if (snap.exists()) {
+      const data = snap.data();
+      const isSameDay = data.lastUpdatedDate === todayStr;
+      const todayCount = isSameDay ? (data.todayPageViews || 0) + 1 : 1;
+      const totalCount = (data.totalPageViews || 0) + 1;
+      const dailyHistory = data.dailyHistory || {};
+      dailyHistory[todayStr] = (dailyHistory[todayStr] || 0) + 1;
+
+      await setDoc(docRef, {
+        totalPageViews: totalCount,
+        todayPageViews: todayCount,
+        lastUpdatedDate: todayStr,
+        dailyHistory,
+        updatedAt: Date.now()
+      }, { merge: true });
+    } else {
+      await setDoc(docRef, {
+        totalPageViews: 1,
+        todayPageViews: 1,
+        lastUpdatedDate: todayStr,
+        dailyHistory: { [todayStr]: 1 },
+        updatedAt: Date.now()
+      });
+    }
+  } catch (err) {
+    console.warn('Analytics tracking offline or notice:', err);
+  }
+}
+
+export function subscribeToSiteAnalytics(
+  onUpdate: (analytics: {
+    totalPageViews: number;
+    todayPageViews: number;
+    lastUpdatedDate: string;
+    dailyHistory: Record<string, number>;
+  }) => void
+): () => void {
+  try {
+    const docRef = doc(db, 'settings', 'analytics');
+    return onSnapshot(
+      docRef,
+      (snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.data();
+          const todayStr = new Date().toISOString().split('T')[0];
+          const isSameDay = data.lastUpdatedDate === todayStr;
+
+          onUpdate({
+            totalPageViews: typeof data.totalPageViews === 'number' ? data.totalPageViews : 0,
+            todayPageViews: isSameDay && typeof data.todayPageViews === 'number' ? data.todayPageViews : 0,
+            lastUpdatedDate: data.lastUpdatedDate || todayStr,
+            dailyHistory: data.dailyHistory || {},
+          });
+        }
+      },
+      (err) => {
+        console.warn('Analytics subscription notice:', err);
+      }
+    );
+  } catch {
+    return () => {};
+  }
+}
+

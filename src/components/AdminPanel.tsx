@@ -18,6 +18,7 @@ import {
   Search, 
   Flame,
   Star,
+  Globe,
   KeyRound,
   Eye,
   EyeOff,
@@ -201,8 +202,10 @@ import {
   saveAdminAuthToCloud,
   subscribeToAdminAuth,
   fetchAdminPasswordFromCloud,
-  saveAdminPasswordToCloud
+  saveAdminPasswordToCloud,
+  subscribeToSiteAnalytics
 } from '../services/firebaseService';
+import { getStoredSiteAnalytics } from '../services/storage';
 import { BannerGuideModal } from './BannerGuideModal';
 import { WhatsAppIcon } from './WhatsAppButton';
 import {
@@ -463,6 +466,21 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       if (cloudConfig) {
         setSiteConfig(cloudConfig);
       }
+    });
+    return () => unsub();
+  }, []);
+
+  // Store Analytics State (Total Page Views & Daily Visits)
+  const [siteAnalytics, setSiteAnalytics] = useState<{
+    totalPageViews: number;
+    todayPageViews: number;
+    lastUpdatedDate: string;
+    dailyHistory: Record<string, number>;
+  }>(() => getStoredSiteAnalytics());
+
+  useEffect(() => {
+    const unsub = subscribeToSiteAnalytics((analytics) => {
+      setSiteAnalytics(analytics);
     });
     return () => unsub();
   }, []);
@@ -4881,41 +4899,89 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       {/* TAB 4: Stats & Affiliate Clicks */}
       {activeTab === 'stats' && (
         <div className="space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                Cliques Reais nos Parceiros
+          {/* Main Traffic & Engagement Counters */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <div className="bg-gradient-to-br from-orange-500/10 via-amber-500/5 to-white rounded-3xl border-2 border-orange-200 p-6 shadow-xs relative overflow-hidden">
+              <div className="absolute top-4 right-4 w-10 h-10 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center font-bold">
+                <Globe className="w-5 h-5" />
+              </div>
+              <span className="text-xs font-bold text-orange-800 uppercase tracking-wider block mb-1">
+                Acessos à Loja (Total)
               </span>
               <div className="text-3xl font-extrabold text-orange-600 tabular-nums">
-                🔥 {totalRealClicks}
+                🌐 {siteAnalytics.totalPageViews}
               </div>
               <p className="text-[11px] text-slate-500 mt-2">
-                Total de cliques 100% reais dados por visitantes em botões de compra ("Ir à Loja" / "Comprar")
+                Total histórico de visitas recebidas na página da sua loja
               </p>
             </div>
 
-            <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs">
+            <div className="bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-white rounded-3xl border-2 border-emerald-200 p-6 shadow-xs relative overflow-hidden">
+              <div className="absolute top-4 right-4 w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold">
+                <Sparkles className="w-5 h-5" />
+              </div>
+              <span className="text-xs font-bold text-emerald-800 uppercase tracking-wider block mb-1">
+                Visitas Hoje
+              </span>
+              <div className="text-3xl font-extrabold text-emerald-600 tabular-nums">
+                ⚡ {siteAnalytics.todayPageViews}
+              </div>
+              <p className="text-[11px] text-slate-500 mt-2">
+                Acessos registrados nas últimas 24h ({new Date().toLocaleDateString('pt-BR')})
+              </p>
+            </div>
+
+            <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs relative overflow-hidden">
+              <div className="absolute top-4 right-4 w-10 h-10 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center font-bold">
+                <Flame className="w-5 h-5 text-orange-500" />
+              </div>
               <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                Visualizações Reais das Ofertas
+                Cliques nos Parceiros
+              </span>
+              <div className="text-3xl font-extrabold text-slate-900 tabular-nums">
+                🔥 {totalRealClicks}
+              </div>
+              <p className="text-[11px] text-slate-500 mt-2">
+                Cliques em "Ir à Loja" / "Comprar" (Shopee, ML, Amazon, etc.)
+              </p>
+            </div>
+
+            <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs relative overflow-hidden">
+              <div className="absolute top-4 right-4 w-10 h-10 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center font-bold">
+                <Eye className="w-5 h-5 text-blue-500" />
+              </div>
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                Visualizações de Ofertas
               </span>
               <div className="text-3xl font-extrabold text-slate-900 tabular-nums">
                 👀 {totalRealViews}
               </div>
               <p className="text-[11px] text-slate-500 mt-2">
-                Acessos e visualizações reais das páginas completas dos achadinhos
+                Páginas de detalhes de achadinhos abertas pelos visitantes
               </p>
             </div>
+          </div>
 
-            <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                Total de Produtos Cadastrados
-              </span>
-              <div className="text-3xl font-extrabold text-slate-900 tabular-nums">
-                {products.length}
+          {/* Conversion & Engagement Rate Pill */}
+          <div className="bg-slate-900 text-white rounded-3xl p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-orange-500/20 text-orange-400 flex items-center justify-center font-bold text-xl border border-orange-500/30 shrink-0">
+                📈
               </div>
-              <p className="text-[11px] text-slate-500 mt-2">
-                Achadinhos ativos no catálogo público
-              </p>
+              <div>
+                <h4 className="font-extrabold text-sm sm:text-base text-white">
+                  Taxa de Conversão de Cliques: {siteAnalytics.totalPageViews > 0 ? ((totalRealClicks / siteAnalytics.totalPageViews) * 100).toFixed(1) : 0}%
+                </h4>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  Proporção de visitantes que clicam diretamente em links de compra das lojas parceiras.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-semibold px-3.5 py-1.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                Tempo Real Ativo
+              </span>
             </div>
           </div>
 
@@ -4973,6 +5039,58 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                 ))
               )}
             </div>
+          </div>
+
+          {/* Daily Visits History Table / Breakdown */}
+          <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs">
+            <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+              <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                <Globe className="w-5 h-5 text-emerald-600" />
+                Histórico Recente de Acessos à Loja por Dia
+              </h3>
+              <span className="text-[11px] font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg">
+                Gravado automaticamente na nuvem
+              </span>
+            </div>
+
+            {Object.keys(siteAnalytics.dailyHistory || {}).length === 0 ? (
+              <div className="p-6 text-center text-slate-500 text-xs bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+                <p className="font-semibold text-slate-700">Primeiros acessos sendo computados...</p>
+                <p className="text-[11px] text-slate-400 mt-1">Conforme os visitantes entrarem na loja, a contagem diária será listada aqui.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-3">
+                {Object.entries(siteAnalytics.dailyHistory || {})
+                  .sort(([dateA], [dateB]) => dateB.localeCompare(dateA))
+                  .slice(0, 14)
+                  .map(([dateStr, count]) => {
+                    const parts = dateStr.split('-');
+                    const formatted = parts.length === 3 ? `${parts[2]}/${parts[1]}` : dateStr;
+                    const isToday = dateStr === new Date().toISOString().split('T')[0];
+
+                    return (
+                      <div
+                        key={dateStr}
+                        className={`p-3.5 rounded-2xl border text-center transition-all ${
+                          isToday
+                            ? 'bg-emerald-50 border-emerald-300 ring-2 ring-emerald-200/50'
+                            : 'bg-slate-50 border-slate-200/80 hover:bg-slate-100/80'
+                        }`}
+                      >
+                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">
+                          {isToday ? 'Hoje' : formatted}
+                        </span>
+                        <div className={`text-xl font-black mt-1 tabular-nums ${isToday ? 'text-emerald-700' : 'text-slate-800'}`}>
+                          {count}
+                        </div>
+                        <span className="text-[10px] font-semibold text-slate-400 block mt-0.5">
+                          {count === 1 ? 'visita' : 'visitas'}
+                        </span>
+                      </div>
+                    );
+                  })}
+              </div>
+            )}
           </div>
         </div>
       )}

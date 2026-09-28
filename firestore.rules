@@ -106,6 +106,10 @@ service cloud.firestore {
       allow read, write: if true;
     }
 
+    match /settings/analytics {
+      allow read, write: if true;
+    }
+
     match /settings/{otherSetting} {
       allow read, write: if true;
     }

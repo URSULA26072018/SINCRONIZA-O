@@ -88,6 +88,18 @@
         "isInitialSetupCompleted": { "type": "boolean" },
         "updatedAt": { "type": "number" }
       }
+    },
+    "siteAnalytics": {
+      "title": "SiteAnalytics",
+      "description": "Store total and daily visits analytics",
+      "type": "object",
+      "properties": {
+        "totalPageViews": { "type": "number" },
+        "todayPageViews": { "type": "number" },
+        "lastUpdatedDate": { "type": "string" },
+        "dailyHistory": { "type": "object" },
+        "updatedAt": { "type": "number" }
+      }
     }
   },
   "firestore": {
@@ -110,6 +122,10 @@
     "/settings/adminAuth": {
       "schema": "adminAuth",
       "description": "Administrator authentication credentials and PIN configuration"
+    },
+    "/settings/analytics": {
+      "schema": "siteAnalytics",
+      "description": "Store visitors and visits analytics counter"
     },
     "/admins/{adminId}": {
       "schema": "admins",

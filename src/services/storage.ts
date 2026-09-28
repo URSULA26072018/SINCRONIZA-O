@@ -512,3 +512,35 @@ export const setAdminSession = (active: boolean): void => {
     console.error('Failed to set admin session', error);
   }
 };
+
+const ANALYTICS_KEY = 'achados_do_dia_site_analytics_v1';
+
+export const getStoredSiteAnalytics = () => {
+  try {
+    const raw = localStorage.getItem(ANALYTICS_KEY);
+    if (!raw) {
+      return {
+        totalPageViews: 0,
+        todayPageViews: 0,
+        lastUpdatedDate: new Date().toISOString().split('T')[0],
+        dailyHistory: {},
+      };
+    }
+    return JSON.parse(raw);
+  } catch {
+    return {
+      totalPageViews: 0,
+      todayPageViews: 0,
+      lastUpdatedDate: new Date().toISOString().split('T')[0],
+      dailyHistory: {},
+    };
+  }
+};
+
+export const saveStoredSiteAnalytics = (analytics: any): void => {
+  try {
+    localStorage.setItem(ANALYTICS_KEY, JSON.stringify(analytics));
+  } catch (err) {
+    console.error('Failed to save local site analytics', err);
+  }
+};

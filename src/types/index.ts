@@ -82,6 +82,15 @@ export interface SiteConfig {
   socialShareDescription?: string;
 }
 
+export interface SiteAnalytics {
+  totalPageViews: number;
+  todayPageViews: number;
+  lastUpdatedDate: string; // YYYY-MM-DD
+  dailyHistory?: Record<string, number>; // date string -> count
+  weeklyPageViews?: number;
+  monthlyPageViews?: number;
+}
+
 export type SortOption = 'latest' | 'popular' | 'featured' | 'title';
 
 export interface FilterState {

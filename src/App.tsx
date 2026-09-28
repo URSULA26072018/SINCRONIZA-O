@@ -30,6 +30,7 @@ import {
   subscribeToAdminPassword,
   trackCloudProductClick,
   trackCloudProductView,
+  trackCloudStorePageView,
   initializeFirestoreSeed
 } from './services/firebaseService';
 import { Navbar } from './components/Navbar';
@@ -131,6 +132,9 @@ export default function App() {
     };
 
     handleUrlRoute();
+    // Track store visit analytics
+    trackCloudStorePageView();
+
     // Smooth initial loading window so initial data and fonts settle gracefully
     const initialTimer = setTimeout(() => {
       setIsInitialLoading(false);

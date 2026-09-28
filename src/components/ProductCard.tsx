@@ -192,17 +192,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           )}
 
           {/* Price with strikethrough (Ancoragem / Desconto) */}
-          {(product.price != null || product.originalPrice != null) && (
+          {((product.price != null && !isNaN(Number(product.price))) || 
+            (product.originalPrice != null && !isNaN(Number(product.originalPrice)))) && (
             <div className="mb-2 sm:mb-2.5 flex items-center gap-1.5 flex-wrap">
               <span className="shrink-0 text-xs sm:text-sm">💰</span>
-              {product.originalPrice != null && (
+              {product.originalPrice != null && !isNaN(Number(product.originalPrice)) && (
                 <span className="text-slate-400 line-through text-[11px] sm:text-xs">
-                  De R$ {product.originalPrice.toFixed(2).replace('.', ',')}
+                  De R$ {Number(product.originalPrice).toFixed(2).replace('.', ',')}
                 </span>
               )}
-              {product.price != null && (
+              {product.price != null && !isNaN(Number(product.price)) && (
                 <span className="font-black text-emerald-600 text-xs sm:text-sm">
-                  {product.originalPrice != null ? 'por ' : ''}R$ {product.price.toFixed(2).replace('.', ',')}
+                  {product.originalPrice != null && !isNaN(Number(product.originalPrice)) ? 'por ' : ''}R$ {Number(product.price).toFixed(2).replace('.', ',')}
                 </span>
               )}
             </div>

@@ -1,4 +1,4 @@
-import { Category, Product } from '../types';
+import { Category, Product } from '../types/index.ts';
 
 export const INITIAL_CATEGORIES: Category[] = [
   {

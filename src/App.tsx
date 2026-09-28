@@ -41,6 +41,7 @@ import { ProductDetail } from './components/ProductDetail';
 import { AdminPanel } from './components/AdminPanel';
 import { Footer } from './components/Footer';
 import { BottomCtaBanner } from './components/BottomCtaBanner';
+import { WhatsAppButton } from './components/WhatsAppButton';
 import { Toast } from './components/Toast';
 import { updatePageSEO } from './utils/seo';
 
@@ -276,19 +277,19 @@ export default function App() {
         url: typeof window !== 'undefined' ? `${window.location.origin}/#produto/${currentProduct.id}` : ''
       }, currentProduct);
     } else {
-      // Home / Catalog view: Use the 1st active banner image for WhatsApp preview and Google social cards
-      const activeBanners = banners.filter((b) => b.isActive);
-      const firstBanner = activeBanners[0] || banners[0];
-      const bannerImage = firstBanner?.imageUrl || '/images/banner_achadinhos_virais_1790121462152.jpg';
+      // Home / Catalog view: Prioritize user-configured social card / og-image
+      const socialImage = siteConfig.socialShareImage || '/images/og-image.jpg';
+      const socialTitle = siteConfig.socialShareTitle || 'Achados do Dia – Melhores Ofertas, Cupons e Achadinhos da Internet';
+      const socialDesc = siteConfig.socialShareDescription || 'Encontre os melhores achadinhos virais, cupons de desconto e promoções oficiais da Shopee, Mercado Livre, Amazon e Shein com links 100% verificados e seguros.';
 
       updatePageSEO({
-        title: 'Achados do Dia – Melhores Ofertas, Cupons e Achadinhos da Internet',
-        description: 'Encontre os melhores achadinhos virais, cupons de desconto e promoções oficiais da Shopee, Mercado Livre, Amazon e Shein com links 100% verificados e seguros.',
-        image: bannerImage,
+        title: socialTitle,
+        description: socialDesc,
+        image: socialImage,
         url: typeof window !== 'undefined' ? window.location.origin : ''
       }, null);
     }
-  }, [currentView, currentProduct, banners]);
+  }, [currentView, currentProduct, siteConfig]);
 
   const hasActiveFilters = Boolean(searchQuery || selectedCategory || selectedStore || selectedBadge || onlyFeatured);
 
@@ -497,14 +498,32 @@ export default function App() {
         )}
 
         {/* VIEW 2: PRODUCT DETAIL PAGE */}
-        {currentView === 'detail' && currentProduct && (
-          <ProductDetail
-            product={currentProduct}
-            allProducts={products}
-            onBack={handleGoHome}
-            onSelectRelated={handleOpenProduct}
-            onShowToast={showToast}
-          />
+        {currentView === 'detail' && (
+          currentProduct ? (
+            <ProductDetail
+              product={currentProduct}
+              allProducts={products}
+              onBack={handleGoHome}
+              onSelectRelated={handleOpenProduct}
+              onShowToast={showToast}
+            />
+          ) : (
+            <div className="max-w-md mx-auto px-4 py-20 text-center">
+              <div className="w-16 h-16 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
+                <PackageOpen className="w-8 h-8" />
+              </div>
+              <h2 className="text-xl font-bold text-slate-900 mb-2">Oferta ou produto não encontrado</h2>
+              <p className="text-sm text-slate-500 mb-6 leading-relaxed">
+                Este achadinho pode ter sido encerrado ou o link que você acessou expirou.
+              </p>
+              <button
+                onClick={handleGoHome}
+                className="px-6 py-2.5 bg-orange-600 hover:bg-orange-700 text-white rounded-xl font-bold text-sm shadow-md cursor-pointer transition-colors"
+              >
+                Voltar para as Ofertas
+              </button>
+            </div>
+          )
         )}
 
         {/* VIEW 3: ADMIN PANEL */}
@@ -519,6 +538,14 @@ export default function App() {
           />
         )}
       </main>
+
+      {/* Floating WhatsApp "Tirar Dúvidas" Button */}
+      {currentView !== 'admin' && (
+        <WhatsAppButton
+          customNumber={siteConfig.whatsappNumber}
+          customMessage={siteConfig.whatsappDefaultMessage}
+        />
+      )}
 
       {/* Global Footer */}
       <Footer

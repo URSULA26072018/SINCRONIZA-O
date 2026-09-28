@@ -395,24 +395,27 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
               </div>
 
               {/* Price with strikethrough */}
-              {(product.price != null || product.originalPrice != null) && (
+              {((product.price != null && !isNaN(Number(product.price))) || 
+                (product.originalPrice != null && !isNaN(Number(product.originalPrice)))) && (
                 <div className="mb-4 pb-3.5 border-b border-slate-800 flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-base">💰</span>
-                    {product.originalPrice != null && (
+                    {product.originalPrice != null && !isNaN(Number(product.originalPrice)) && (
                       <span className="text-slate-400 line-through text-xs sm:text-sm">
-                        De R$ {product.originalPrice.toFixed(2).replace('.', ',')}
+                        De R$ {Number(product.originalPrice).toFixed(2).replace('.', ',')}
                       </span>
                     )}
-                    {product.price != null && (
+                    {product.price != null && !isNaN(Number(product.price)) && (
                       <span className="font-extrabold text-emerald-400 text-sm sm:text-base">
-                        {product.originalPrice != null ? 'por ' : ''}R$ {product.price.toFixed(2).replace('.', ',')}
+                        {product.originalPrice != null && !isNaN(Number(product.originalPrice)) ? 'por ' : ''}R$ {Number(product.price).toFixed(2).replace('.', ',')}
                       </span>
                     )}
                   </div>
-                  {product.originalPrice && product.price && product.originalPrice > product.price && (
+                  {product.originalPrice != null && product.price != null && 
+                   !isNaN(Number(product.originalPrice)) && !isNaN(Number(product.price)) && 
+                   Number(product.originalPrice) > Number(product.price) && (
                     <span className="text-[11px] font-extrabold text-emerald-300 bg-emerald-950/80 border border-emerald-700/50 px-2 py-0.5 rounded-lg shrink-0">
-                      {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
+                      {Math.round(((Number(product.originalPrice) - Number(product.price)) / Number(product.originalPrice)) * 100)}% OFF
                     </span>
                   )}
                 </div>

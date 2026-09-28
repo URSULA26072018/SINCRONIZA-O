@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import fs from 'fs';
 import { defineConfig, type Plugin } from 'vite';
-import { INITIAL_PRODUCTS } from './src/data/initialData';
+import { INITIAL_PRODUCTS } from './src/data/initialData.ts';
 
 function socialCardsPlugin(): Plugin {
   return {
@@ -22,7 +22,7 @@ function socialCardsPlugin(): Plugin {
                 const base64Data = data.imageBase64.replace(/^data:image\/\w+;base64,/, '');
                 const buffer = Buffer.from(base64Data, 'base64');
                 
-                const pubDir = path.resolve(__dirname, 'public');
+                const pubDir = path.resolve(process.cwd(), 'public');
                 const imagesDir = path.resolve(pubDir, 'images');
                 if (!fs.existsSync(imagesDir)) {
                   fs.mkdirSync(imagesDir, { recursive: true });
@@ -34,7 +34,7 @@ function socialCardsPlugin(): Plugin {
                 fs.writeFileSync(path.resolve(pubDir, 'og-image-whatsapp.jpg'), buffer);
 
                 // If dist already exists, update dist as well so immediate preview/build has it
-                const distDir = path.resolve(__dirname, 'dist');
+                const distDir = path.resolve(process.cwd(), 'dist');
                 if (fs.existsSync(distDir)) {
                   fs.writeFileSync(path.resolve(distDir, 'og-image.jpg'), buffer);
                   fs.writeFileSync(path.resolve(distDir, 'og-image-whatsapp.jpg'), buffer);
@@ -133,7 +133,7 @@ export default defineConfig(() => {
     plugins: [react(), tailwindcss(), socialCardsPlugin()],
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, '.'),
+        '@': path.resolve(process.cwd(), '.'),
       },
     },
     server: {

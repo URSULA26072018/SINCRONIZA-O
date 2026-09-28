@@ -143,3 +143,71 @@
 .animate-fadeIn {
   animation: fadeIn 0.4s ease-out forwards;
 }
+
+/* Card Borders Highlight & Neon Glow Effects */
+.card-neon-base {
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s ease, ring-color 0.28s ease;
+  will-change: transform, box-shadow;
+}
+
+.card-neon-default {
+  border-width: 2px;
+  border-color: #cbd5e1; /* slate-300: clearly defined, highlighted border */
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+}
+
+.card-neon-default:hover {
+  border-color: #f97316 !important;
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.55),
+              0 0 22px rgba(249, 115, 22, 0.45),
+              0 0 45px rgba(249, 115, 22, 0.2),
+              0 14px 28px -4px rgba(0, 0, 0, 0.12) !important;
+  transform: translateY(-5px);
+}
+
+.card-neon-featured {
+  border-width: 2px;
+  border-color: #fbbf24; /* amber-400 */
+  box-shadow: 0 2px 8px -1px rgba(245, 158, 11, 0.18);
+}
+
+.card-neon-featured:hover {
+  border-color: #f59e0b !important;
+  box-shadow: 0 0 0 2.5px rgba(245, 158, 11, 0.7),
+              0 0 26px rgba(245, 158, 11, 0.5),
+              0 0 52px rgba(251, 191, 36, 0.25),
+              0 16px 32px -4px rgba(0, 0, 0, 0.14) !important;
+  transform: translateY(-5px);
+}
+
+.card-neon-collection {
+  border-width: 2px;
+  border-color: #a5b4fc; /* indigo-300 */
+  box-shadow: 0 2px 8px -1px rgba(99, 102, 241, 0.15);
+}
+
+.card-neon-collection:hover {
+  border-color: #6366f1 !important;
+  box-shadow: 0 0 0 2.5px rgba(99, 102, 241, 0.7),
+              0 0 26px rgba(99, 102, 241, 0.5),
+              0 0 52px rgba(129, 140, 248, 0.25),
+              0 16px 32px -4px rgba(0, 0, 0, 0.14) !important;
+  transform: translateY(-5px);
+}
+
+.card-neon-top {
+  border-width: 2px;
+  border-color: #fbbf24; /* amber-400 */
+  box-shadow: 0 4px 14px -2px rgba(249, 115, 22, 0.22);
+}
+
+.card-neon-top:hover,
+.group\/card:hover .card-neon-top {
+  border-color: #f97316 !important;
+  box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.85),
+              0 0 32px rgba(249, 115, 22, 0.6),
+              0 0 65px rgba(245, 158, 11, 0.32),
+              0 20px 38px -6px rgba(0, 0, 0, 0.18) !important;
+  transform: translateY(-6px);
+}
+

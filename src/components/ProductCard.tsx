@@ -35,20 +35,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     <div className={isTopFeaturedArea ? "relative group/card h-full flex flex-col" : "h-full flex flex-col"}>
       {isTopFeaturedArea && (
         <div
-          className="absolute -inset-0.5 sm:-inset-1 bg-gradient-to-r from-amber-400 via-orange-500 to-amber-500 rounded-2.5xl opacity-40 group-hover/card:opacity-100 blur-xs sm:blur-sm group-hover/card:blur-md transition-all duration-300 -z-10 pointer-events-none"
+          className="absolute -inset-1 sm:-inset-1.5 bg-gradient-to-r from-amber-400 via-orange-500 to-amber-500 rounded-3xl opacity-45 group-hover/card:opacity-100 blur-xs sm:blur-sm group-hover/card:blur-lg transition-all duration-300 -z-10 pointer-events-none"
           aria-hidden="true"
         />
       )}
       <article
         onClick={handleCardClick}
-        className={`group bg-white rounded-2xl overflow-hidden flex flex-col flex-1 transition-all duration-300 cursor-pointer text-left ${
+        className={`group bg-white rounded-2xl overflow-hidden flex flex-col flex-1 card-neon-base cursor-pointer text-left ${
           isTopFeaturedArea
-            ? 'relative border-2 border-amber-400/90 shadow-md shadow-orange-500/15 group-hover/card:border-orange-500 group-hover/card:-translate-y-1.5 sm:group-hover/card:-translate-y-2 group-hover/card:shadow-2xl group-hover/card:shadow-orange-500/35 ring-1 ring-amber-300/70'
+            ? 'relative card-neon-top ring-1 ring-amber-300/80'
             : product.isCollection
-              ? 'border-2 border-indigo-300 shadow-sm shadow-indigo-500/10 hover:border-indigo-500 hover:shadow-xl hover:-translate-y-1'
+              ? 'card-neon-collection'
               : product.isFeatured
-                ? 'border-2 border-amber-400/90 shadow-sm shadow-amber-500/15 hover:border-amber-500 hover:shadow-xl hover:-translate-y-1'
-                : 'border border-slate-200/90 hover:border-orange-300 hover:shadow-lg hover:-translate-y-1'
+                ? 'card-neon-featured'
+                : 'card-neon-default'
         }`}
       >
       {/* Image Area with Store & Status Badges */}

@@ -473,7 +473,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
               <div
                 key={rel.id}
                 onClick={() => onSelectRelated(rel)}
-                className="bg-white rounded-2xl border border-slate-200 p-3 hover:border-orange-300 hover:shadow-md transition-all cursor-pointer flex gap-4 group"
+                className="bg-white rounded-2xl p-3 card-neon-base card-neon-default cursor-pointer flex gap-4 group"
               >
                 <div className="w-24 h-24 rounded-xl bg-slate-100 overflow-hidden shrink-0">
                   <img

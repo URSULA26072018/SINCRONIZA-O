@@ -100,7 +100,127 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
   </head>
   <body class="bg-[#F8F9FA] text-[#1E293B] antialiased min-h-screen">
-    <div id="root"></div>
+    <div id="root">
+      <!-- Instant preloader while JS bundle loads over slow internet -->
+      <style>
+        @keyframes init-bounce {
+          0%, 100% { transform: translateY(0) scale(1.05, 0.94); }
+          45% { transform: translateY(-20px) scale(0.96, 1.05); }
+          60% { transform: translateY(-18px) scale(0.98, 1.02); }
+        }
+        @keyframes init-shadow {
+          0%, 100% { transform: scale(1.15); opacity: 0.28; }
+          50% { transform: scale(0.62); opacity: 0.08; }
+        }
+        @keyframes init-shimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(200%); }
+        }
+        .init-preloader {
+          position: fixed;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          background: linear-gradient(to bottom, #FFF7ED, #FFF1E6, #F8F9FA);
+          font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+          z-index: 99999;
+          padding: 16px;
+        }
+        .init-mascot {
+          animation: init-bounce 1.1s cubic-bezier(0.28, 0.84, 0.42, 1) infinite;
+          transform-origin: bottom center;
+        }
+        .init-shadow {
+          width: 80px;
+          height: 12px;
+          background: rgba(124, 45, 18, 0.15);
+          border-radius: 9999px;
+          filter: blur(4px);
+          animation: init-shadow 1.1s cubic-bezier(0.28, 0.84, 0.42, 1) infinite;
+        }
+        .init-bar-bg {
+          width: 220px;
+          height: 8px;
+          background: #FFEDD5;
+          border-radius: 9999px;
+          overflow: hidden;
+          position: relative;
+          border: 1px solid rgba(251, 146, 60, 0.3);
+          margin-top: 14px;
+        }
+        .init-bar-fill {
+          position: absolute;
+          top: 0; left: 0; bottom: 0;
+          width: 45%;
+          background: linear-gradient(90deg, #EA580C, #F59E0B, #EA580C);
+          border-radius: 9999px;
+          animation: init-shimmer 1.6s ease-in-out infinite;
+        }
+      </style>
+      <div class="init-preloader">
+        <div style="position: relative; width: 140px; height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+          <!-- SVG Mascot Bag Character -->
+          <div class="init-mascot">
+            <svg width="90" height="96" viewBox="0 0 90 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="bagGrad" x1="0" y1="0" x2="90" y2="96" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#F97316"/>
+                  <stop offset="0.6" stop-color="#EA580C"/>
+                  <stop offset="1" stop-color="#C2410C"/>
+                </linearGradient>
+                <linearGradient id="handleGrad" x1="0" y1="0" x2="0" y2="28" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#FDE047"/>
+                  <stop offset="1" stop-color="#F59E0B"/>
+                </linearGradient>
+              </defs>
+              <!-- Handle -->
+              <path d="M28 24C28 14 35 7 45 7C55 7 62 14 62 24" stroke="url(#handleGrad)" stroke-width="5" stroke-linecap="round"/>
+              <!-- Bag Body -->
+              <rect x="6" y="20" width="78" height="72" rx="20" fill="url(#bagGrad)"/>
+              <!-- Highlight -->
+              <ellipse cx="26" cy="36" rx="14" ry="7" fill="white" fill-opacity="0.22" transform="rotate(-25 26 36)"/>
+              <!-- Eyes -->
+              <circle cx="33" cy="52" r="4.5" fill="#0F172A"/>
+              <circle cx="34.5" cy="50.5" r="1.5" fill="white"/>
+              <circle cx="57" cy="52" r="4.5" fill="#0F172A"/>
+              <circle cx="58.5" cy="50.5" r="1.5" fill="white"/>
+              <!-- Rosy Cheeks -->
+              <ellipse cx="27" cy="59" rx="4" ry="2.2" fill="#FB7185" fill-opacity="0.7"/>
+              <ellipse cx="63" cy="59" rx="4" ry="2.2" fill="#FB7185" fill-opacity="0.7"/>
+              <!-- Happy Smile -->
+              <path d="M40 59C42 63 48 63 50 59" stroke="#0F172A" stroke-width="2.5" stroke-linecap="round"/>
+              <!-- Tag -->
+              <rect x="25" y="70" width="40" height="15" rx="7.5" fill="#FDE047"/>
+              <text x="45" y="81" font-size="9" font-weight="900" fill="#9A3412" text-anchor="middle" font-family="sans-serif">% OFERTA</text>
+            </svg>
+          </div>
+          <!-- Shadow -->
+          <div class="init-shadow"></div>
+        </div>
+
+        <div style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 14px; border-radius: 9999px; background: #FFEDD5; border: 1px solid #FED7AA; color: #C2410C; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 10px;">
+          🛒 Achados do Dia
+        </div>
+
+        <div style="font-size: 18px; font-weight: 900; color: #1E293B; margin-top: 10px; letter-spacing: -0.02em;">
+          Quase pronto pra economizar!
+        </div>
+
+        <div style="font-size: 13px; color: #64748B; margin-top: 4px; font-weight: 500;">
+          Garimpando as melhores ofertas da internet...
+        </div>
+
+        <div class="init-bar-bg">
+          <div class="init-bar-fill"></div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 4px; font-size: 11px; color: #94A3B8; margin-top: 8px; font-weight: 500;">
+          🛡️ Links oficiais e 100% seguros
+        </div>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -42,10 +42,12 @@ import { AdminPanel } from './components/AdminPanel';
 import { Footer } from './components/Footer';
 import { BottomCtaBanner } from './components/BottomCtaBanner';
 import { WhatsAppButton } from './components/WhatsAppButton';
+import { AppPreloader } from './components/AppPreloader';
 import { Toast } from './components/Toast';
 import { updatePageSEO } from './utils/seo';
 
 export default function App() {
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [banners, setBanners] = useState<Banner[]>([]);
@@ -130,9 +132,15 @@ export default function App() {
     };
 
     handleUrlRoute();
+    // Smooth initial loading window so initial data and fonts settle gracefully
+    const initialTimer = setTimeout(() => {
+      setIsInitialLoading(false);
+    }, 750);
+
     window.addEventListener('hashchange', handleUrlRoute);
     window.addEventListener('popstate', handleUrlRoute);
     return () => {
+      clearTimeout(initialTimer);
       window.removeEventListener('hashchange', handleUrlRoute);
       window.removeEventListener('popstate', handleUrlRoute);
       unsubProducts();
@@ -316,6 +324,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F8F9FA] text-slate-800 antialiased">
+      {/* Animated App Preloader for Smooth Initial & Slow Internet Loading */}
+      <AppPreloader isLoading={isInitialLoading} />
+
       {/* Global Navbar */}
       <Navbar
         onGoHome={handleGoHome}

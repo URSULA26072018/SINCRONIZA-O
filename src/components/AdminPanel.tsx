@@ -1209,10 +1209,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
   const handleToggleBottomCtaActive = (isActive: boolean) => {
     const currentCta = siteConfig.bottomCtaBanner || {
-      badge: '🔍 Não encontrou o que procurava? Pedido 100% Gratuito!',
+      badge: '🔍 Não encontrou o que procurava?',
       title: 'Quer que a gente encontre um produto ou oferta específica para você?',
-      description: 'Se você precisa de qualquer equipamento, acessório ou achadinho confiável que não está na lista, fale conosco! Nós garimpamos o menor preço oficial com cupom e segurança pra você, sem nenhum custo.',
-      buttonText: 'Pedir Oferta sem Custo no WhatsApp',
+      description: 'Se você precisa de qualquer equipamento, acessório ou produto confiável que não está no site, peça pra gente! Nós garimpamos a melhor oferta com vendedor verificado pra você, Pedido 100% Gratuito!',
+      buttonText: 'Fazer pedido no WhatsApp',
       secondaryButtonText: 'Entrar no Grupo VIP de Ofertas',
       linkType: 'whatsapp_direct',
       targetUrl: '',
@@ -1237,10 +1237,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     if (preset === 'product_request') {
       updatedCta = {
         isActive: true,
-        badge: '🔍 Não encontrou o que procurava? Pedido 100% Gratuito!',
+        badge: '🔍 Não encontrou o que procurava?',
         title: 'Quer que a gente encontre um produto ou oferta específica para você?',
-        description: 'Se você precisa de qualquer equipamento, acessório ou produto confiável que não está no site, peça pra gente! Nós garimpamos a melhor oferta com vendedor verificado e cupom de desconto pra você, 100% sem custos.',
-        buttonText: 'Pedir Oferta sem Custo no WhatsApp',
+        description: 'Se você precisa de qualquer equipamento, acessório ou produto confiável que não está no site, peça pra gente! Nós garimpamos a melhor oferta com vendedor verificado pra você, Pedido 100% Gratuito!',
+        buttonText: 'Fazer pedido no WhatsApp',
         secondaryButtonText: '',
         linkType: 'whatsapp_direct',
         targetUrl: current?.targetUrl || '',
@@ -1264,7 +1264,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         badge: '✨ Atendimento Especial & Grupo VIP',
         title: 'Procurando outro produto ou quer entrar no nosso Grupo VIP?',
         description: 'Nós pesquisamos qualquer equipamento ou achadinho confiável para você sem nenhum custo, ou você pode entrar na nossa comunidade oficial para receber ofertas diárias com cupons.',
-        buttonText: 'Pedir Oferta sem Custo no WhatsApp',
+        buttonText: 'Fazer pedido no WhatsApp',
         secondaryButtonText: 'Entrar no Grupo VIP de Ofertas',
         linkType: 'hybrid',
         targetUrl: current?.targetUrl || '',
@@ -3255,7 +3255,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                       },
                     })
                   }
-                  placeholder="Ex: 🔍 Não encontrou o que procurava? Pedido 100% Gratuito!"
+                  placeholder="Ex: 🔍 Não encontrou o que procurava?"
                   className="w-full px-4 py-2.5 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-emerald-500 font-medium"
                 />
               </div>
@@ -3311,7 +3311,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                       },
                     })
                   }
-                  placeholder="Ex: Se você precisa de qualquer equipamento, acessório ou achadinho confiável que não está na lista, fale conosco! Nós garimpamos o menor preço oficial com cupom e segurança pra você, sem nenhum custo."
+                  placeholder="Ex: Se você precisa de qualquer equipamento, acessório ou produto confiável que não está no site, peça pra gente! Nós garimpamos a melhor oferta com vendedor verificado pra você, Pedido 100% Gratuito!"
                   className="w-full px-4 py-2.5 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-emerald-500 leading-relaxed"
                 />
               </div>
@@ -3370,7 +3370,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                         },
                       })
                     }
-                    placeholder="Ex: Pedir Oferta sem Custo no WhatsApp"
+                    placeholder="Ex: Fazer pedido no WhatsApp"
                     className="w-full px-4 py-2.5 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-emerald-500 font-bold"
                   />
                 </div>

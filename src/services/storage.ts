@@ -190,13 +190,23 @@ export const getStoredSiteConfig = (): SiteConfig => {
       return INITIAL_SITE_CONFIG;
     }
     const parsed = JSON.parse(raw);
+    const bottomCta = {
+      ...INITIAL_SITE_CONFIG.bottomCtaBanner,
+      ...(parsed?.bottomCtaBanner || {}),
+    };
+    if (bottomCta.badge) {
+      bottomCta.badge = bottomCta.badge.replace(/\s*Pedido 100% Gratuito!?/gi, '').trim() || '🔍 Não encontrou o que procurava?';
+    }
+    if (bottomCta.description && (bottomCta.description.includes('100% sem custos.') || bottomCta.description.includes('achadinho confiável que não está na lista'))) {
+      bottomCta.description = 'Se você precisa de qualquer equipamento, acessório ou produto confiável que não está no site, peça pra gente! Nós garimpamos a melhor oferta com vendedor verificado pra você, Pedido 100% Gratuito!';
+    }
+    if (bottomCta.buttonText && bottomCta.buttonText.includes('Pedir Oferta sem Custo')) {
+      bottomCta.buttonText = 'Fazer pedido no WhatsApp';
+    }
     return {
       ...INITIAL_SITE_CONFIG,
       ...(parsed || {}),
-      bottomCtaBanner: {
-        ...INITIAL_SITE_CONFIG.bottomCtaBanner,
-        ...(parsed?.bottomCtaBanner || {}),
-      },
+      bottomCtaBanner: bottomCta,
     };
   } catch (error) {
     console.error('Failed to load site config from localStorage', error);

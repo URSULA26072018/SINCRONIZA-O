@@ -367,10 +367,10 @@ export const INITIAL_SITE_CONFIG = {
   socialShareDescription: 'Encontre os melhores achadinhos virais, cupons de desconto e promoções oficiais da Shopee, Mercado Livre, Amazon e Shein com links 100% verificados e seguros.',
   bottomCtaBanner: {
     isActive: true,
-    badge: '🔍 Não encontrou o que procurava? Pedido 100% Gratuito!',
+    badge: '🔍 Não encontrou o que procurava?',
     title: 'Quer que a gente encontre um produto ou oferta específica para você?',
-    description: 'Se você precisa de qualquer equipamento, acessório ou achadinho confiável que não está na lista, fale conosco! Nós garimpamos o menor preço oficial com cupom e segurança pra você, sem nenhum custo.',
-    buttonText: 'Pedir Oferta sem Custo no WhatsApp',
+    description: 'Se você precisa de qualquer equipamento, acessório ou produto confiável que não está no site, peça pra gente! Nós garimpamos a melhor oferta com vendedor verificado pra você, Pedido 100% Gratuito!',
+    buttonText: 'Fazer pedido no WhatsApp',
     secondaryButtonText: 'Entrar no Grupo VIP de Ofertas',
     linkType: 'whatsapp_direct' as const,
     targetUrl: '',

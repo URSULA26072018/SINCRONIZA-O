@@ -84,13 +84,18 @@ export const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
       <div className="flex items-center gap-1.5 sm:gap-2">
         <button
           onClick={handleOpenWhatsApp}
-          className="flex items-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] active:scale-95 text-white px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-full shadow-lg shadow-emerald-500/25 transition-all duration-200 cursor-pointer font-bold text-xs sm:text-sm border border-emerald-400/30"
+          className="relative flex items-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] active:scale-95 text-white px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-full shadow-lg shadow-emerald-500/30 transition-all duration-200 cursor-pointer font-bold text-xs sm:text-sm border border-emerald-400/40 hover:shadow-xl hover:shadow-emerald-500/40 hover:-translate-y-0.5"
           aria-label="Tirar dúvidas pelo WhatsApp"
         >
+          {/* Subtle radar aura effect */}
+          <span className="absolute inset-0 rounded-full bg-[#25D366] animate-whatsapp-radar pointer-events-none -z-10"></span>
+
           <div className="relative flex items-center justify-center shrink-0">
-            <WhatsAppIcon className="w-5 h-5 text-white fill-current animate-icon-pulse" />
+            {/* Pulsing ring around icon */}
+            <span className="absolute -inset-1 rounded-full bg-white/35 animate-ping opacity-75 pointer-events-none"></span>
+            <WhatsAppIcon className="w-5 h-5 text-white fill-current animate-whatsapp-pulse relative z-10" />
           </div>
-          <span className="whitespace-nowrap tracking-tight font-display text-xs sm:text-sm">
+          <span className="whitespace-nowrap tracking-tight font-display text-xs sm:text-sm relative z-10 font-bold">
             Tirar Dúvidas
           </span>
         </button>

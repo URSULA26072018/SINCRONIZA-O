@@ -58,6 +58,20 @@ export const BottomCtaBanner: React.FC<BottomCtaBannerProps> = ({
   const linkType = config.linkType || 'whatsapp_direct';
   const hasGroupUrl = Boolean(groupUrl);
 
+  const defaultDesc = 'Se você precisa de qualquer equipamento, acessório ou produto confiável que não está no site, peça pra gente! Nós garimpamos a melhor oferta com vendedor verificado pra você, Pedido 100% Gratuito!';
+  const rawBadge = config.badge || '🔍 Não encontrou o que procurava?';
+  const displayBadge = rawBadge.replace(/\s*Pedido 100% Gratuito!?/gi, '').trim() || '🔍 Não encontrou o que procurava?';
+  
+  const rawDesc = config.description || defaultDesc;
+  const displayDesc = rawDesc.includes('100% sem custos.')
+    ? rawDesc.replace('e cupom de desconto pra você, 100% sem custos.', 'pra você, Pedido 100% Gratuito!').replace('com cupom e segurança pra você, sem nenhum custo.', 'com vendedor verificado pra você, Pedido 100% Gratuito!')
+    : (rawDesc.includes('achadinho confiável que não está na lista') ? defaultDesc : rawDesc);
+
+  const rawButtonText = config.buttonText || 'Fazer pedido no WhatsApp';
+  const displayButtonText = rawButtonText.includes('Pedir Oferta sem Custo')
+    ? 'Fazer pedido no WhatsApp'
+    : rawButtonText;
+
   return (
     <div className={`w-full max-w-7xl mx-auto px-3 sm:px-6 my-8 sm:my-12 ${className}`}>
       <section 
@@ -80,7 +94,7 @@ export const BottomCtaBanner: React.FC<BottomCtaBannerProps> = ({
             {/* Top Pill / Badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-xs sm:text-sm font-bold tracking-wide">
               <Sparkles className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
-              <span>{config.badge || '🔍 Não encontrou o que procurava? Pedido 100% Gratuito!'}</span>
+              <span>{displayBadge}</span>
             </div>
 
             {/* Title */}
@@ -90,7 +104,7 @@ export const BottomCtaBanner: React.FC<BottomCtaBannerProps> = ({
 
             {/* Description */}
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-2xl font-normal">
-              {config.description || 'Se você precisa de qualquer equipamento, acessório ou achadinho confiável que não está na lista, fale conosco! Nós garimpamos o menor preço oficial com cupom e segurança pra você, sem nenhum custo.'}
+              {displayDesc}
             </p>
 
             {/* Benefit Bullets / Micro-proofs */}
@@ -122,7 +136,7 @@ export const BottomCtaBanner: React.FC<BottomCtaBannerProps> = ({
                 <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center shrink-0">
                   <WhatsAppIcon className="w-4 h-4 fill-white" />
                 </div>
-                <span className="truncate">{config.buttonText || 'Pedir Oferta sem Custo no WhatsApp'}</span>
+                <span className="truncate">{displayButtonText}</span>
                 <ArrowRight className="w-4 h-4 text-emerald-200 group-hover:translate-x-1 transition-transform shrink-0" />
               </button>
             )}
@@ -162,7 +176,7 @@ export const BottomCtaBanner: React.FC<BottomCtaBannerProps> = ({
                   <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center shrink-0">
                     <WhatsAppIcon className="w-4 h-4 fill-white" />
                   </div>
-                  <span className="truncate">{config.buttonText || 'Pedir Oferta sem Custo'}</span>
+                  <span className="truncate">{displayButtonText}</span>
                   <ArrowRight className="w-4 h-4 text-emerald-200 group-hover:translate-x-1 transition-transform shrink-0" />
                 </button>
 
